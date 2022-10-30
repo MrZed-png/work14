@@ -4,6 +4,7 @@ import flask
 
 
 def run_sql(sql):
+    '''выгрузка базы данных'''
     with sqlite3.connect("netflix.db") as connection:
         connection.row_factory = sqlite3.Row
 
@@ -11,6 +12,7 @@ def run_sql(sql):
 
 
 def search_by_name(title):
+    '''поиск по названию.'''
     sql = f'''SELECT title, country, release_year, listed_in AS genre, description 
           FROM netflix 
           WHERE title='{title}'
@@ -24,6 +26,7 @@ def search_by_name(title):
 
 
 def range_of_years_of_release(year1, year2):
+    ''' поиск по диапазону лет выпуска'''
     sql = f'''SELECT title, release_year
           FROM netflix 
           WHERE release_year
@@ -38,6 +41,7 @@ def range_of_years_of_release(year1, year2):
 
 
 def search_by_rating(rating):
+    ''' поиск по рейтингу'''
     my_dict = {
         "children": ("G", "G"),
         "family": ("G", "PG", "PG-13"),
@@ -55,6 +59,7 @@ def search_by_rating(rating):
 
 
 def search_by_genre(genre):
+    '''список название и описание каждого фильма'''
     sql = f'''SELECT title, description
           FROM netflix 
           WHERE listed_in
@@ -68,6 +73,7 @@ def search_by_genre(genre):
 
 
 def search_by_actors(name1, name2):
+    '''список тех, кто играет с ними в паре больше 2 раз'''
     sql = f'''SELECT "cast"
           FROM netflix 
           WHERE "cast"
@@ -96,6 +102,7 @@ def search_by_actors(name1, name2):
 
 
 def search_by_all(typ, year, genre):
+    '''список названий картин с их описаниями в JSON по типу, году, жанру'''
     sql = f"""
           SELECT title, description
           FROM netflix 
